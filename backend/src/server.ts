@@ -209,7 +209,11 @@ app.get("/api/pubchem", async (req: Request, res: Response) => {
   }
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`[ChemGPT Backend] Running on http://localhost:${PORT}`);
-});
+// Start Server locally if not in Vercel serverless
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[ChemGPT Backend] Running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
