@@ -1,0 +1,24 @@
+{
+  "name": "chemgpt",
+  "version": "1.0.0",
+  "description": "ChemGPT — AI Chemistry Copilot for Students, Researchers, and Scientists crafted by Saumojit Roy",
+  "author": "Saumojit Roy <saumojitroy40@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mimozing3003/-ChemGPT.git"
+  },
+  "homepage": "https://github.com/mimozing3003/-ChemGPT",
+  "scripts": {
+    "start": "npx -y serve frontend/public -p 3000",
+    "dev": "npx -y serve frontend/public -p 3000"
+  },
+  "keywords": [
+    "chemistry",
+    "ai",
+    "periodic-table",
+    "chemgpt",
+    "molecules",
+    "saumojit-roy"
+  ],
+  "license": "MIT"
+}

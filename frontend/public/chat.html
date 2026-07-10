@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ChemGPT | Molecular Intelligence Workspace</title>
+<meta name="description" content="ChemGPT AI Workspace — real-time molecular analysis, AI chat, and 3D visualization. Built by Saumojit Roy."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@600;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" rel="stylesheet"/>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+<style>
+  * { box-sizing: border-box; border-radius: 0 !important; }
+  body { background-color: #131313; color: #e5e2e1; overflow: hidden; font-family: Geist, sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .brutalist-border { border: 3px solid #000000; }
+  .brutalist-shadow { box-shadow: 4px 4px 0px 0px #000000; }
+  .brutalist-shadow-sm { box-shadow: 2px 2px 0px 0px #000000; }
+  .brutalist-card { border: 3px solid #000000; box-shadow: 4px 4px 0px 0px #000000; }
+  .nav-bar { background:rgba(19,19,19,0.97);backdrop-filter:blur(12px);border-bottom:2px solid #3c4a42; }
+  .btn-primary { background:#10b981;border:2px solid #000;box-shadow:3px 3px 0 #000;color:#002113;font-weight:800;transition:all .1s;cursor:pointer; }
+  .btn-primary:hover { transform:translate(-1px,-1px);box-shadow:5px 5px 0 #000; }
+  .author-chip { background:linear-gradient(135deg,#0a2a1e,#131313);border:1.5px solid #4edea3;box-shadow:0 0 14px #4edea322; display:inline-flex;align-items:center;gap:6px;padding:5px 12px; }
+  .streaming-text::after {
+    content: ''; display: inline-block; width: 2px; height: 1.2em;
+    background: #4edea3; margin-left: 4px; vertical-align: middle;
+    animation: blink 0.8s infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  .text-gradient { background:linear-gradient(135deg,#4edea3,#ffb95f);background-size:200% 200%;animation:gradientShift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+  .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: #1c1b1b; border-left: 2px solid #000; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #4edea3; border: 2px solid #000; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6ffbbe; }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-tertiary-fixed": "#2a1700",
+          "on-primary": "#003824",
+          "on-tertiary-container": "#523200",
+          "on-secondary-fixed-variant": "#004395",
+          "on-surface-variant": "#bbcabf",
+          "inverse-primary": "#006c49",
+          "surface-container-low": "#1c1b1b",
+          "on-error-container": "#ffdad6",
+          "surface-container-lowest": "#0e0e0e",
+          "surface": "#131313",
+          "secondary": "#adc6ff",
+          "on-secondary": "#002e6a",
+          "primary-fixed-dim": "#4edea3",
+          "on-primary-container": "#00422b",
+          "inverse-on-surface": "#313030",
+          "on-surface": "#e5e2e1",
+          "background": "#131313",
+          "secondary-fixed": "#d8e2ff",
+          "error": "#ffb4ab",
+          "tertiary": "#ffb95f",
+          "on-tertiary": "#472a00",
+          "outline-variant": "#3c4a42",
+          "on-tertiary-fixed-variant": "#653e00",
+          "inverse-surface": "#e5e2e1",
+          "on-error": "#690005",
+          "surface-bright": "#3a3939",
+          "secondary-fixed-dim": "#adc6ff",
+          "secondary-container": "#0566d9",
+          "on-primary-fixed": "#002113",
+          "primary": "#4edea3",
+          "surface-tint": "#4edea3",
+          "surface-container-highest": "#353534",
+          "on-secondary-fixed": "#001a42",
+          "tertiary-fixed": "#ffddb8",
+          "surface-container-high": "#2a2a2a",
+          "tertiary-container": "#e29100",
+          "primary-container": "#10b981",
+          "surface-container": "#201f1f",
+          "on-secondary-container": "#e6ecff",
+          "surface-variant": "#353534",
+          "surface-dim": "#131313",
+          "on-primary-fixed-variant": "#005236",
+          "tertiary-fixed-dim": "#ffb95f",
+          "error-container": "#93000a",
+          "primary-fixed": "#6ffbbe",
+          "on-background": "#e5e2e1",
+          "outline": "#86948a"
+        },
+        "borderRadius": {
+          "DEFAULT": "0px",
+          "lg": "0px",
+          "xl": "0px",
+          "full": "9999px"
+        },
+        "spacing": {
+          "shadow-offset": "4px",
+          "gutter": "24px",
+          "margin": "32px",
+          "border-width": "3px",
+          "grid-unit": "4px"
+        },
+        "fontFamily": {
+          "body-lg": ["Geist"],
+          "headline-xl": ["Geist"],
+          "label-mono-sm": ["JetBrains Mono"],
+          "body-md": ["Geist"],
+          "headline-sm": ["Geist"],
+          "headline-lg": ["Geist"],
+          "label-mono-lg": ["JetBrains Mono"],
+          "data-display": ["JetBrains Mono"]
+        },
+      },
+    },
+  }
+</script>
+</head>
+<body class="flex flex-col h-screen font-body-md text-on-background bg-background">
+
+<!-- WebGL Background -->
+<div class="fixed inset-0 w-full h-full -z-10 pointer-events-none opacity-40">
+  <canvas id="shader-canvas" style="display:block;width:100%;height:100%"></canvas>
+  <script>
+  (function() {
+    const canvas = document.getElementById('shader-canvas');
+    function syncSize() { const w=canvas.clientWidth||1280,h=canvas.clientHeight||720; if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;} }
+    if(typeof ResizeObserver!=='undefined') new ResizeObserver(syncSize).observe(canvas);
+    syncSize();
+    const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');
+    if(!gl)return;
+    const vs=`attribute vec2 a_position;varying vec2 v_uv;void main(){v_uv=a_position*0.5+0.5;gl_Position=vec4(a_position,0.,1.);}`;
+    const fs=`precision highp float;uniform float u_time;uniform vec2 u_resolution;vec3 permute(vec3 x){return mod(((x*34.)+1.)*x,289.);}float snoise(vec2 v){const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);vec2 i=floor(v+dot(v,C.yy));vec2 x0=v-i+dot(i,C.xx);vec2 i1=(x0.x>x0.y)?vec2(1.,0.):vec2(0.,1.);vec4 x12=x0.xyxy+C.xxzz;x12.xy-=i1;i=mod(i,289.);vec3 p=permute(permute(i.y+vec3(0.,i1.y,1.))+i.x+vec3(0.,i1.x,1.));vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.);m=m*m;m=m*m;vec3 x=2.*fract(p*C.www)-1.;vec3 h=abs(x)-0.5;vec3 ox=floor(x+0.5);vec3 a0=x-ox;m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);vec3 g;g.x=a0.x*x0.x+h.x*x0.y;g.yz=a0.yz*x12.xz+h.yz*x12.yw;return 130.*dot(m,g);}void main(){vec2 p=(gl_FragCoord.xy*2.-u_resolution)/min(u_resolution.y,u_resolution.x);float t=u_time*0.2;float n1=snoise(p*0.8+t);float n2=snoise(p*1.5-t*0.7);float bonds=smoothstep(0.45,0.5,abs(n1-n2));vec3 base=vec3(0.07,0.07,0.07);vec3 accent=vec3(0.06,0.87,0.51);vec3 col=base+accent*bonds*0.15;float particles=pow(abs(snoise(p*4.+t)),10.);col+=accent*particles*0.4;gl_FragColor=vec4(col,1.);}`;
+    function cs(t,s){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);return sh;}
+    const prog=gl.createProgram();gl.attachShader(prog,cs(gl.VERTEX_SHADER,vs));gl.attachShader(prog,cs(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);gl.useProgram(prog);
+    const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const pos=gl.getAttribLocation(prog,'a_position');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+    const uTime=gl.getUniformLocation(prog,'u_time');const uRes=gl.getUniformLocation(prog,'u_resolution');
+    let mouse={x:0,y:0};window.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();mouse.x=(e.clientX-r.left)/r.width*canvas.width;mouse.y=(1-(e.clientY-r.top)/r.height)*canvas.height;});
+    function render(t){syncSize();gl.viewport(0,0,canvas.width,canvas.height);gl.uniform1f(uTime,t*0.001);gl.uniform2f(uRes,canvas.width,canvas.height);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(render);}
+    render(0);
+  })();
+  </script>
+</div>
+
+<!-- Top Navigation Bar -->
+<header class="nav-bar fixed top-0 w-full z-50 flex justify-between items-center px-8 py-3 max-w-full mx-auto">
+  <div class="flex items-center gap-3">
+    <div style="width:32px;height:32px;background:#10b981;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #000;">
+      <span class="material-symbols-outlined" style="color:#002113;font-size:18px;font-variation-settings:'FILL' 1;">science</span>
+    </div>
+    <a href="index.html" style="text-decoration:none;">
+      <span style="font-family:Geist,sans-serif;font-size:20px;font-weight:800;color:#4edea3;text-transform:uppercase;font-style:italic;letter-spacing:-.03em;">ChemGPT</span>
+    </a>
+    <div style="border:1px solid #3c4a42;padding:2px 8px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#86948a;">WORKSPACE</span>
+    </div>
+  </div>
+  <div class="hidden md:flex items-center gap-8">
+    <nav class="flex items-center gap-6">
+      <button style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#4edea3;border-bottom:3px solid #4edea3;padding-bottom:4px;letter-spacing:.06em;background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;">LABORATORY</button>
+      <a href="index.html" style="text-decoration:none;"><button style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#86948a;background:none;border:none;cursor:pointer;letter-spacing:.06em;" class="hover:text-primary transition-colors">HOME</button></a>
+      <a href="encyclopedia.html" style="text-decoration:none;"><button style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#86948a;background:none;border:none;cursor:pointer;letter-spacing:.06em;" class="hover:text-primary transition-colors">ENCYCLOPEDIA</button></a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-3">
+    <div class="author-chip" onclick="openDevModal()" style="cursor:pointer;" title="Click for Developer Profile — Saumojit Roy">
+      <span class="material-symbols-outlined" style="color:#4edea3;font-size:13px;font-variation-settings:'FILL' 1;">code</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4edea3;font-weight:700;">Saumojit Roy</span>
+    </div>
+    <button class="p-2 brutalist-border brutalist-shadow-sm bg-surface-container-high hover:bg-primary hover:text-on-primary transition-all">
+      <span class="material-symbols-outlined">ios_share</span>
+    </button>
+    <div class="w-9 h-9 brutalist-border overflow-hidden">
+      <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3f0_SpiHD_pFaSkPRJZnI4rcd2Uo-M_IB3Z2JSTZFeXAvhBwZx323uwzAWR2qP0lLVNL1fkMV5e5Wu22M0ls1PxEHHBAf4VsrS7kkNgE0f7Hvuyn85lccjNwK5gbfzr6h38SwhURFzmArX_2CvtNVvh_ploT-eUkRbd-g5eSoBC153V2WYx2i3e08-XfPvdmYCbneLovQ7c7EtqN30ictppFBTVxwSTnCvML9DPWFBTAYay54VpGxHKnVabLp4FL8uoj8rXeDN700"/>
+    </div>
+  </div>
+</header>
+
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex-col py-8 bg-surface-container-low brutalist-border border-y-0 border-l-0 border-r-[3px] w-64 hidden xl:flex translate-y-14">
+  <div class="px-6 mb-8 mt-4">
+    <h2 class="font-headline-lg text-primary uppercase">ChemGPT OS</h2>
+    <p class="font-data-display text-sm opacity-60">v4.2.0-STABLE</p>
+  </div>
+  <nav class="flex-1 flex flex-col">
+    <a class="text-on-primary bg-primary brutalist-border border-x-0 border-y-[1.5px] px-4 py-4 flex items-center gap-3" href="#">
+      <span class="material-symbols-outlined">biotech</span>
+      <span class="font-label-mono-lg uppercase">Laboratory</span>
+    </a>
+    <a class="text-on-surface hover:bg-surface-container px-4 py-4 flex items-center gap-3 border-b-[1.5px] border-black transition-all" href="#">
+      <span class="material-symbols-outlined">forum</span>
+      <span class="font-label-mono-lg uppercase">Chat</span>
+    </a>
+    <a class="text-on-surface hover:bg-surface-container px-4 py-4 flex items-center gap-3 border-b-[1.5px] border-black transition-all" href="encyclopedia.html">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span class="font-label-mono-lg uppercase">Encyclopedia</span>
+    </a>
+    <a class="text-on-surface hover:bg-surface-container px-4 py-4 flex items-center gap-3 border-b-[1.5px] border-black transition-all" href="#">
+      <span class="material-symbols-outlined">history</span>
+      <span class="font-label-mono-lg uppercase">Archive</span>
+    </a>
+  </nav>
+  <div class="px-4 py-4">
+    <button class="w-full bg-tertiary text-on-tertiary brutalist-border brutalist-shadow font-bold py-4 flex items-center justify-center gap-2 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+      <span class="material-symbols-outlined">add</span>
+      NEW EXPERIMENT
+    </button>
+  </div>
+</aside>
+
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col md:flex-row pt-14 xl:ml-64 overflow-hidden">
+  <!-- Left Panel: Conversation Area -->
+  <section class="flex-1 flex flex-col bg-surface-container-low brutalist-border border-y-0 border-l-0 border-r-[3px] overflow-hidden">
+    <div class="p-6 brutalist-border border-x-0 border-t-0 border-b-[3px] flex justify-between items-center bg-surface-container">
+      <div class="flex flex-col">
+        <h3 class="font-headline-lg text-on-surface uppercase tracking-tight">Synthesis of Vanillin</h3>
+        <p class="font-data-display text-on-surface-variant">Reimer-Tiemann &amp; Catechol Pathways</p>
+      </div>
+      <div class="flex gap-2">
+        <div class="px-3 py-1 brutalist-border bg-primary/10 text-primary font-data-display text-[10px] uppercase font-bold">Stable</div>
+        <div class="px-3 py-1 brutalist-border bg-tertiary/10 text-tertiary font-data-display text-[10px] uppercase font-bold">Validated</div>
+      </div>
+    </div>
+    <div class="flex-1 overflow-y-auto p-gutter space-y-gutter custom-scrollbar bg-[#1c1b1b]/80" id="chat-messages">
+      <!-- User Prompt -->
+      <div class="flex justify-end">
+        <div class="max-w-[85%] bg-surface-container-high brutalist-border brutalist-shadow p-4">
+          <p class="font-body-md">Explain the laboratory synthesis of Vanillin from guaiacol and provide the reaction mechanism.</p>
+        </div>
+      </div>
+      <!-- AI Response -->
+      <div class="flex justify-start gap-4">
+        <div class="w-10 h-10 brutalist-border bg-primary-container flex items-center justify-center brutalist-shadow-sm shrink-0">
+          <span class="material-symbols-outlined text-on-primary text-xl" style="font-variation-settings: 'FILL' 1;">terminal</span>
+        </div>
+        <div class="max-w-[90%] space-y-6">
+          <div class="streaming-text font-body-md leading-relaxed bg-surface p-4 brutalist-border brutalist-shadow">
+            Vanillin (4-hydroxy-3-methoxybenzaldehyde) can be synthesized through several industrial and laboratory routes. One common laboratory method is the <strong>Reimer–Tiemann reaction</strong>, though industrially, the glyoxylic acid route from guaiacol is preferred for higher yields.
+          </div>
+          <!-- Chemical Formula Block -->
+          <div class="brutalist-border brutalist-shadow bg-primary/5 p-4">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="material-symbols-outlined text-primary">function</span>
+              <span class="font-data-display text-primary uppercase font-bold">Molecular Definition</span>
+            </div>
+            <div class="text-2xl font-data-display py-2 bg-black/40 p-4 border-2 border-black" id="math-formula">
+              C_8H_8O_3 \quad \text{(Vanillin)}
+            </div>
+          </div>
+          <!-- Markdown Content -->
+          <div class="space-y-4 font-body-md bg-surface-container p-6 brutalist-border brutalist-shadow">
+            <h4 class="text-on-surface font-bold uppercase border-b-2 border-black pb-2 mb-4">Mechanism Overview:</h4>
+            <div class="font-data-display space-y-4">
+              <p>1. <span class="text-primary font-bold">ACTIVATION:</span> Guaiacol reacts with glyoxylic acid in an aqueous alkaline medium.</p>
+              <p>2. <span class="text-primary font-bold">CONDENSATION:</span> An electrophilic aromatic substitution occurs at the <em>para</em>-position relative to the hydroxyl group.</p>
+            </div>
+            <!-- Reaction Diagram -->
+            <div class="my-6 p-6 bg-surface-container-highest brutalist-border border-dashed border-4 border-outline-variant flex items-center justify-center">
+              <div class="text-center w-full">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 font-data-display">
+                  <div class="p-4 brutalist-border bg-surface w-full md:w-32">
+                    <span class="block font-bold">GUAIACOL</span>
+                    <span class="text-xs text-primary font-bold">C7H8O2</span>
+                  </div>
+                  <span class="material-symbols-outlined text-primary text-3xl font-bold">arrow_forward</span>
+                  <div class="p-4 brutalist-border bg-surface border-primary w-full md:w-48">
+                    <span class="block text-primary font-bold">VANILLYLMANDELIC ACID</span>
+                    <span class="text-xs opacity-60">Intermediate</span>
+                  </div>
+                  <span class="material-symbols-outlined text-primary text-3xl font-bold">arrow_forward</span>
+                  <div class="p-4 brutalist-border bg-primary text-on-primary brutalist-shadow w-full md:w-32">
+                    <span class="block font-bold">VANILLIN</span>
+                    <span class="text-xs font-bold">C8H8O3</span>
+                  </div>
+                </div>
+                <p class="mt-4 text-[10px] font-data-display text-outline uppercase tracking-widest font-bold">Sequence: GLYOXYLIC ACID ROUTE</p>
+              </div>
+            </div>
+            <p class="font-data-display text-sm leading-relaxed">The resulting vanillylmandelic acid is then oxidized (typically with oxygen over a catalyst) to yield Vanillin after acidification and decarboxylation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Input Bar -->
+    <div class="p-gutter bg-surface brutalist-border border-x-0 border-b-0 border-t-[3px]">
+      <div class="relative max-w-3xl mx-auto">
+        <input id="chat-input" class="w-full bg-surface-container-high brutalist-border brutalist-shadow focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-none py-5 pl-14 pr-20 font-data-display transition-all outline-none" placeholder="INQUIRE ABOUT MOLECULAR PROPERTIES..." type="text"/>
+        <div class="absolute left-5 top-1/2 -translate-y-1/2">
+          <span class="material-symbols-outlined text-on-surface-variant font-bold">search</span>
+        </div>
+        <div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-3">
+          <button class="p-2 brutalist-border bg-surface hover:bg-surface-container transition-all">
+            <span class="material-symbols-outlined">mic</span>
+          </button>
+          <button id="send-btn" class="p-2 bg-primary text-on-primary brutalist-border brutalist-shadow-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all">
+            <span class="material-symbols-outlined font-bold">send</span>
+          </button>
+        </div>
+      </div>
+      <div class="flex justify-center gap-8 mt-4">
+        <button class="flex items-center gap-2 text-xs font-data-display font-bold uppercase hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-sm">attach_file</span> Attach Data
+        </button>
+        <button class="flex items-center gap-2 text-xs font-data-display font-bold uppercase hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-sm">auto_graph</span> Optimize Path
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right Panel: Visualization Lab -->
+  <section class="w-full md:w-[450px] lg:w-[550px] bg-background/50 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <div class="p-6 brutalist-border border-t-0 border-x-0 border-b-[3px] flex justify-between items-center bg-surface-bright">
+      <div class="flex items-center gap-3">
+        <div class="w-3 h-3 brutalist-border bg-primary animate-pulse"></div>
+        <span class="font-data-display font-bold uppercase tracking-widest text-primary">3D Analysis Active</span>
+      </div>
+      <div class="flex gap-3">
+        <button class="p-2 brutalist-border bg-surface hover:bg-primary transition-all">
+          <span class="material-symbols-outlined">fullscreen</span>
+        </button>
+      </div>
+    </div>
+    <!-- Visualization Canvas -->
+    <div class="flex-1 relative bg-black/40 brutalist-border border-x-0 border-y-0">
+      <div class="absolute inset-0 flex items-center justify-center z-10 p-4">
+        <div class="w-full h-full brutalist-border bg-[#060e20]/60 relative">
+          <canvas id="mol3d-canvas" style="width:100%;height:100%;display:block;"></canvas>
+          <!-- Overlay Controls -->
+          <div class="absolute bottom-6 left-6 z-20 flex flex-col gap-2">
+            <div class="bg-surface brutalist-border brutalist-shadow-sm px-4 py-2 flex items-center gap-3 text-xs font-data-display font-bold">
+              <span class="text-primary uppercase">Rotation</span>
+              <div class="w-24 h-3 brutalist-border bg-surface-container relative">
+                <div class="absolute inset-0 bg-primary" style="width: 65%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute top-6 right-6 z-20">
+            <div class="bg-surface brutalist-border brutalist-shadow p-4 space-y-4">
+              <div class="flex flex-col">
+                <span class="text-[10px] font-data-display text-outline uppercase font-bold">Bond Length</span>
+                <span class="text-lg font-data-display">1.38 Å <span class="text-primary text-xs">AVG</span></span>
+              </div>
+              <div class="flex flex-col brutalist-border border-x-0 border-b-0 border-t-[1.5px] pt-3">
+                <span class="text-[10px] font-data-display text-outline uppercase font-bold">Surface Area</span>
+                <span class="text-lg font-data-display">168.4 Å²</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Metadata Panel -->
+    <div class="p-6 bg-surface-container-high/90 brutalist-border border-x-0 border-b-0 border-t-[3px]">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="material-symbols-outlined text-tertiary font-bold">analytics</span>
+        <h4 class="font-headline-lg text-sm uppercase tracking-wider">Compound Metadata</h4>
+      </div>
+      <div class="grid grid-cols-2 gap-gutter">
+        <div class="space-y-6">
+          <div class="flex flex-col bg-surface p-3 brutalist-border brutalist-shadow-sm">
+            <span class="text-[10px] font-data-display text-outline uppercase font-bold">Chemical Formula</span>
+            <span class="text-xl font-data-display text-primary font-bold">C<sub>8</sub>H<sub>8</sub>O<sub>3</sub></span>
+          </div>
+          <div class="flex flex-col bg-surface p-3 brutalist-border brutalist-shadow-sm">
+            <span class="text-[10px] font-data-display text-outline uppercase font-bold">Molar Mass</span>
+            <span class="text-md font-data-display">152.15 <span class="text-xs opacity-60">g/mol</span></span>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div class="flex flex-col bg-surface p-3 brutalist-border brutalist-shadow-sm">
+            <span class="text-[10px] font-data-display text-outline uppercase font-bold">PubChem CID</span>
+            <span class="text-md font-data-display text-tertiary font-bold">1183</span>
+          </div>
+          <div class="flex flex-col bg-surface p-3 brutalist-border brutalist-shadow-sm">
+            <span class="text-[10px] font-data-display text-outline uppercase font-bold">Melting Point</span>
+            <span class="text-md font-data-display">81 - 83 <span class="text-xs opacity-60">°C</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 pt-6 brutalist-border border-x-0 border-b-0 border-t-[1.5px] border-black/20">
+        <div class="flex justify-between items-center">
+          <div class="flex gap-1">
+            <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+          </div>
+          <span class="text-[10px] font-data-display text-outline font-bold uppercase">Purity Match: 99.8%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer style="background:#0e0e0e;border-top:3px solid #000;z-index:50;position:relative;padding:10px 24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#86948a;text-transform:uppercase;">© 2024 ChemGPT AI — Molecular Intelligence Platform</span>
+    <div style="width:1px;height:14px;background:#3c4a42;"></div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0a2a1e,#131313);border:1.5px solid #4edea3;padding:3px 10px;">
+      <span class="material-symbols-outlined" style="color:#4edea3;font-size:13px;font-variation-settings:'FILL' 1;">code</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4edea3;font-weight:700;">Made by Saumojit Roy</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:20px;">
+    <a style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#86948a;text-transform:uppercase;text-decoration:none;" href="#">Documentation</a>
+    <a style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#86948a;text-transform:uppercase;text-decoration:none;" href="#">Ethics</a>
+    <a style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#86948a;text-transform:uppercase;text-decoration:none;" href="#">Support</a>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // KaTeX render
+    const formulaElement = document.getElementById('math-formula');
+    if (formulaElement && typeof katex !== 'undefined') {
+      katex.render(formulaElement.textContent, formulaElement, { throwOnError: false });
+    }
+
+    // Simple chat send functionality
+    const sendBtn = document.getElementById('send-btn');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+    if (sendBtn && chatInput) {
+      sendBtn.addEventListener('click', () => {
+        const val = chatInput.value.trim();
+        if (!val) return;
+        const userMsg = document.createElement('div');
+        userMsg.className = 'flex justify-end';
+        userMsg.innerHTML = `<div class="max-w-[85%] bg-surface-container-high brutalist-border brutalist-shadow p-4"><p class="font-body-md">${val}</p></div>`;
+        chatMessages.appendChild(userMsg);
+        chatInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      });
+      chatInput.addEventListener('keydown', e => { if(e.key === 'Enter') sendBtn.click(); });
+    }
+
+    // 3D molecule canvas animation
+    const mol = document.getElementById('mol3d-canvas');
+    if (mol) {
+      function syncMol() { mol.width = mol.clientWidth || 400; mol.height = mol.clientHeight || 300; }
+      syncMol();
+      const ctx = mol.getContext('2d');
+      const atoms = [
+        {x:0,y:0,r:16,color:'#4edea3',label:'C'},
+        {x:55,y:-35,r:13,color:'#ffb95f',label:'O'},
+        {x:55,y:35,r:13,color:'#ffb95f',label:'O'},
+        {x:-60,y:-35,r:11,color:'#adc6ff',label:'H'},
+        {x:-60,y:35,r:11,color:'#adc6ff',label:'H'},
+        {x:0,y:-70,r:11,color:'#adc6ff',label:'H'},
+        {x:0,y:70,r:11,color:'#4edea3',label:'C'},
+      ];
+      const bonds = [[0,1],[0,2],[0,3],[0,4],[0,5],[0,6]];
+      let angle = 0;
+      function draw() {
+        syncMol();
+        const cx = mol.width / 2, cy = mol.height / 2;
+        ctx.clearRect(0,0,mol.width,mol.height);
+        const cos = Math.cos(angle), sin = Math.sin(angle);
+        const proj = atoms.map(a => ({
+          px: cx + a.x * cos - a.y * sin * 0.3,
+          py: cy + a.x * sin * 0.3 + a.y * cos * 0.7,
+          r: a.r, color: a.color, label: a.label
+        }));
+        bonds.forEach(([i,j]) => {
+          ctx.beginPath(); ctx.moveTo(proj[i].px,proj[i].py); ctx.lineTo(proj[j].px,proj[j].py);
+          ctx.strokeStyle='#3c4a42'; ctx.lineWidth=2; ctx.stroke();
+        });
+        proj.forEach(a => {
+          ctx.beginPath(); ctx.arc(a.px,a.py,a.r,0,Math.PI*2);
+          ctx.fillStyle=a.color+'33'; ctx.fill();
+          ctx.strokeStyle=a.color; ctx.lineWidth=2; ctx.stroke();
+          ctx.fillStyle=a.color; ctx.font=`bold ${a.r}px JetBrains Mono,monospace`;
+          ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(a.label,a.px,a.py);
+        });
+        angle += 0.01; requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  });
+
+  function openDevModal(){document.getElementById('dev-modal').style.display='flex';}
+  function closeDevModal(){document.getElementById('dev-modal').style.display='none';}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDevModal();});
+</script>
+
+<!-- ── DEVELOPER PROFILE MODAL ── -->
+<div id="dev-modal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,8,16,.85);backdrop-filter:blur(12px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#12121f;border:1px solid #4edea344;border-radius:24px;padding:36px;max-width:480px;width:100%;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.8), 0 0 40px rgba(78,222,163,.15);">
+    <button onclick="closeDevModal()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:#86948a;font-size:24px;cursor:pointer;">×</button>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,#4edea3,#ffb95f);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#080810;">SR</div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#4edea3;text-transform:uppercase;letter-spacing:1px;font-weight:700;">LEAD ARCHITECT & CREATOR</div>
+        <h3 style="font-size:24px;font-weight:800;color:#fff;margin:4px 0 2px;">Saumojit Roy</h3>
+        <p style="font-size:13px;color:#86948a;margin:0;">Full-Stack AI & Scientific Web App Developer</p>
+      </div>
+    </div>
+    <p style="font-size:14px;color:#cbd5e1;line-height:1.6;margin-bottom:24px;background:rgba(255,255,255,.03);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);">
+      Architected and engineered <strong style="color:#4edea3;">ChemGPT</strong> — the next-generation AI chemistry copilot featuring 3D molecular intelligence, real-time chemical search, and interactive scientific workspaces.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+      <a href="mailto:saumojitroy40@gmail.com" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(78,222,163,.08);border:1px solid rgba(78,222,163,.25);border-radius:12px;color:#fff;text-decoration:none;font-weight:600;font-size:14px;transition:all .2s;">
+        <span class="material-symbols-outlined" style="color:#4edea3;">mail</span>
+        <span>saumojitroy40@gmail.com</span>
+      </a>
+      <a href="https://github.com/mimozing3003" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;text-decoration:none;font-weight:600;font-size:14px;transition:all .2s;">
+        <span class="material-symbols-outlined" style="color:#fff;">code</span>
+        <span>github.com/mimozing3003</span>
+      </a>
+      <a href="https://www.linkedin.com/in/saumojit-roy-ba9707295/" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(10,102,194,.15);border:1px solid rgba(10,102,194,.35);border-radius:12px;color:#fff;text-decoration:none;font-weight:600;font-size:14px;transition:all .2s;">
+        <span class="material-symbols-outlined" style="color:#38bdf8;">business</span>
+        <span>LinkedIn Profile — Saumojit Roy</span>
+      </a>
+    </div>
+    <div style="text-align:center;">
+      <button onclick="closeDevModal()" style="width:100%;padding:12px;background:#4edea3;color:#080810;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;">Close Profile</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
