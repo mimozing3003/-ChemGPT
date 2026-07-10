@@ -18,6 +18,8 @@
 
 ---
 
+![ChemGPT Banner](./banner.png?raw=true)
+
 </div>
 
 ---
