@@ -3,14 +3,17 @@
 # ⚗️ ChemGPT — The AI Chemistry Copilot & Molecular Intelligence Platform
 
 [![Maker](https://img.shields.io/badge/Maker-Saumojit%20Roy-4edea3?style=for-the-badge&logo=github&logoColor=080810)](https://github.com/mimozing3003)
+[![Live App](https://img.shields.io/badge/Live%20App-chem--gpt--ten.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://chem-gpt-ten.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-ffb95f?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Deploy with Vercel](https://img.shields.io/badge/Deploy%20on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmimozing3003%2F-ChemGPT)
 [![Three.js](https://img.shields.io/badge/3D%20Engine-Three.js-blueviolet?style=for-the-badge&logo=three.js&logoColor=white)](#)
-[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20CSS-38bdf8?style=for-the-badge&logo=tailwind-css&logoColor=white)](#)
 
 <p align="center">
   <strong>Ask anything in chemistry. Visualize every molecule. Understand every reaction.</strong><br/>
-  <em>Designed and Architected by <a href="https://github.com/mimozing3003">Saumojit Roy</a></em>
+  <em>Designed and Architected by <a href="https://github.com/mimozing3003">Saumojit Roy</a></em><br/><br/>
+  <a href="https://chem-gpt-ten.vercel.app/">
+    <img src="https://img.shields.io/badge/🌐_LAUNCH_LIVE_APP-chem--gpt--ten.vercel.app-4edea3?style=for-the-badge" alt="Launch Live App"/>
+  </a>
 </p>
 
 ---
@@ -133,7 +136,7 @@ npm start
 # OR serve directly
 npx serve frontend/public -p 3000
 ```
-Open your browser at **http://localhost:3000** to begin exploring!
+🌐 **Live Production Application**: Open **[https://chem-gpt-ten.vercel.app/](https://chem-gpt-ten.vercel.app/)** in your browser right now to begin exploring! *(Or visit http://localhost:3000 for local development)*
 
 ---
 
