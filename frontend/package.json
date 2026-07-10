@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "echo 'Static frontend ready inside public'",
     "start": "next start",
     "lint": "eslint"
   },

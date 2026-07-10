@@ -9,6 +9,7 @@
   },
   "homepage": "https://github.com/mimozing3003/-ChemGPT",
   "scripts": {
+    "build": "echo 'Static site ready for Vercel'",
     "start": "npx -y serve frontend/public -p 3000",
     "dev": "npx -y serve frontend/public -p 3000"
   },
